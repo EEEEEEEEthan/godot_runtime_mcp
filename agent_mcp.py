@@ -3,8 +3,7 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
-from typing import Annotated, Any
+from typing import Annotated
 
 import httpx
 from mcp.server.fastmcp import FastMCP
@@ -25,8 +24,8 @@ def send_http(
     *,
     host: str = DEFAULT_HOST,
     timeout_seconds: float = 30.0,
-) -> Any:
-    """POST GDScript source to the given port; returns the response data field on success."""
+) -> object:
+    """POST GDScript to the game port; return parsed response ``data`` on success."""
     url = f"http://{host}:{port}/"
     try:
         with httpx.Client(timeout=timeout_seconds) as client:
@@ -38,7 +37,7 @@ def send_http(
             response.raise_for_status()
     except httpx.TimeoutException as error:
         raise GameCommandError(
-            f"request timed out ({timeout_seconds}s): port={port}"
+            f"request timed out ({timeout_seconds}s): port={port}",
         ) from error
     except httpx.HTTPError as error:
         raise GameCommandError(f"HTTP request failed: port={port}, {error}") from error
@@ -46,7 +45,9 @@ def send_http(
     try:
         body = response.json()
     except json.JSONDecodeError as error:
-        raise GameCommandError(f"response is not valid JSON: {response.text}") from error
+        raise GameCommandError(
+            f"response is not valid JSON: {response.text}",
+        ) from error
 
     if not isinstance(body, dict):
         raise GameCommandError(f"response must be a JSON object: {body}")
@@ -55,14 +56,6 @@ def send_http(
         raise GameCommandError(str(body.get("error", "unknown error")))
 
     return body.get("data", "")
-
-
-def _format_run_result(port: int, script: str) -> str:
-    try:
-        result = send_http(port, script)
-    except GameCommandError as error:
-        return f"error: {error}"
-    return json.dumps(result, ensure_ascii=False, indent=2)
 
 
 @mcp.tool()
@@ -82,7 +75,11 @@ def run(
     ],
 ) -> str:
     """Execute GDScript in a running Godot instance."""
-    return _format_run_result(port, script)
+    try:
+        result = send_http(port, script)
+    except GameCommandError as error:
+        return f"error: {error}"
+    return json.dumps(result, ensure_ascii=False, indent=2)
 
 
 if __name__ == "__main__":

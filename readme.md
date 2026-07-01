@@ -29,7 +29,7 @@ In the project root `.cursor/mcp.json`:
 {
   "mcpServers": {
     "godot-game": {
-      "command": "addons/godot_runtime_mcp/ide_mcp.bat"
+      "command": "addons/godot_runtime_mcp/agent_mcp.bat"
     }
   }
 }

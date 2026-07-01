@@ -21,8 +21,6 @@ In **Project → Project Settings → Autoload**, add:
 res://addons/godot_runtime_mcp/game_mcp.gd
 ```
 
-Node name: `GameMcp`
-
 ### 2. MCP configuration
 
 In the project root `.cursor/mcp.json`:

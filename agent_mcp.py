@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from typing import Any
 
 import httpx
@@ -55,19 +56,23 @@ def send_http(
     return body.get("data", "")
 
 
-@mcp.tool()
-def run(port: int, script: str) -> str:
-    """在运行中的 Godot 实例里执行 GDScript。
-
-    Args:
-        port: 游戏日志 <<<GAME_MCP::PORT=XXXX>>> 中的端口号。
-        script: 完整 GDScript 源码，须 extends RefCounted 并定义 run(scene_tree) 方法。
-    """
+def _format_run_result(port: int, script: str) -> str:
     try:
         result = send_http(port, script)
     except GameCommandError as error:
         return f"error: {error}"
     return json.dumps(result, ensure_ascii=False, indent=2)
+
+
+@mcp.tool()
+def run(port: int, script: str) -> str:
+    """Execute GDScript in a running Godot instance.
+
+    Args:
+        port: Port from game log marker <<<GAME_MCP::PORT=XXXX>>>.
+        script: Full GDScript source; must extend RefCounted and define run(scene_tree).
+    """
+    return _format_run_result(port, script)
 
 
 if __name__ == "__main__":

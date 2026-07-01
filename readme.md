@@ -2,6 +2,15 @@
 
 Send GDScript to a running Godot instance and execute it at runtime—for debugging, white-box testing, and inspecting scene state.
 
+## Install
+
+In your Godot project root, add this repo as a submodule under `addons/`:
+
+```bash
+cd /path/to/your/godot-project
+git submodule add https://github.com/EEEEEEEEthan/godot_runtime_mcp.git addons/godot_runtime_mcp
+```
+
 ## Setup
 
 ### 1. Autoload

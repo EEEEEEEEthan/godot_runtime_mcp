@@ -70,7 +70,7 @@ def run(port: int, script: str) -> str:
 
     Args:
         port: Port from game log marker <<<GAME_MCP::PORT=XXXX>>>.
-        script: Full GDScript source; must extend RefCounted and define run(scene_tree).
+        script: Full GDScript source code; must define static func run(scene_tree).
     """
     return _format_run_result(port, script)
 

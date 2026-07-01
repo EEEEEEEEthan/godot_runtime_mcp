@@ -54,7 +54,18 @@ After the game starts, the log prints:
 
 You can also have the agent launch the game itself—it will automatically include the log in context.
 
-### 4. Prompt the agent
+### 4. Script format
+
+Submitted GDScript must define a static entry point:
+
+```gdscript
+static func run(scene_tree: SceneTree) -> Variant:
+    return scene_tree.current_scene.name
+```
+
+No `extends` is required. `run` may use `await` (e.g. `await scene_tree.process_frame`).
+
+### 5. Prompt the agent
 
 Example prompt:
 

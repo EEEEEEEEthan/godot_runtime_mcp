@@ -106,14 +106,11 @@ func _execute_script(script_source: String) -> Variant:
 	gdscript.resource_path = "mcp-dynamic://%d" % _dynamic_script_count
 	if gdscript.reload() != OK:
 		return "error: compilation failed"
-	var script_instance = gdscript.new()
-	if not script_instance is RefCounted:
-		return "error: script must extend RefCounted"
-	if not script_instance.has_method("run"):
-		return "error: script missing run(scene_tree) method"
+	if not gdscript.has_method("run"):
+		return "error: script missing static run(scene_tree) method"
 	var output_capture := _RunOutputCapture.new()
 	OS.add_logger(output_capture)
-	var run_result = await script_instance.run(get_tree())
+	var run_result = await gdscript.call("run", get_tree())
 	OS.remove_logger(output_capture)
 	return {
 		"value": run_result,

@@ -4,10 +4,11 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any
+from typing import Annotated, Any
 
 import httpx
 from mcp.server.fastmcp import FastMCP
+from pydantic import Field
 
 DEFAULT_HOST = "127.0.0.1"
 
@@ -65,13 +66,22 @@ def _format_run_result(port: int, script: str) -> str:
 
 
 @mcp.tool()
-def run(port: int, script: str) -> str:
-    """Execute GDScript in a running Godot instance.
-
-    Args:
-        port: Port from game log marker <<<GAME_MCP::PORT=XXXX>>>.
-        script: Full GDScript source code; must define static func run(scene_tree). run may be async (use await inside).
-    """
+def run(
+    port: Annotated[
+        int,
+        Field(description="Port from game log marker <<<GAME_MCP::PORT=XXXX>>>."),
+    ],
+    script: Annotated[
+        str,
+        Field(
+            description=(
+                "Full GDScript source code; must define static func run(scene_tree). "
+                "run may be async (use await inside)."
+            ),
+        ),
+    ],
+) -> str:
+    """Execute GDScript in a running Godot instance."""
     return _format_run_result(port, script)
 
 

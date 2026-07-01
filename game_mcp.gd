@@ -113,7 +113,7 @@ func _execute_script(script_source: String) -> Variant:
 	var run_result = await gdscript.call("run", get_tree())
 	OS.remove_logger(output_capture)
 	return {
-		"value": run_result,
+		"returned": run_result,
 		"stdout": output_capture.collect(),
 	}
 

@@ -23,7 +23,9 @@ res://addons/godot_runtime_mcp/game_mcp.gd
 
 ### 2. MCP configuration
 
-In the project root `.cursor/mcp.json`:
+Requires Python 3.10+ (Windows).
+
+**Cursor** — `.cursor/mcp.json`:
 
 ```json
 {
@@ -35,7 +37,12 @@ In the project root `.cursor/mcp.json`:
 }
 ```
 
-Requires Python 3.10+.
+**Codex** — `.codex/config.toml`:
+
+```toml
+[mcp_servers.godot-game]
+command = "addons/godot_runtime_mcp/agent_mcp.bat"
+```
 
 ### 3. Get the port number
 

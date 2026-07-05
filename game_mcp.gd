@@ -23,6 +23,7 @@ var _connections: Array[Dictionary] = []
 var _dynamic_script_count := 0
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	while not _start(_port):
 		_port += 1
 	print("<<<GAME_MCP::PORT=%d>>>" % _port)

@@ -75,10 +75,7 @@ def run(
     ],
 ) -> str:
     """Execute GDScript in a running Godot instance."""
-    try:
-        result = send_http(port, script)
-    except GameCommandError as error:
-        return f"error: {error}"
+    result = send_http(port, script)
     return json.dumps(result, ensure_ascii=False, indent=2)
 
 

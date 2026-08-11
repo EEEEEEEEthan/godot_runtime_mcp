@@ -24,6 +24,11 @@ var _dynamic_script_count := 0
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	# Web 平台 TCPServer.listen 永远失败，while 循环会卡死启动，直接停用 MCP
+	if OS.has_feature("web"):
+		set_process(false)
+		print("Game MCP: web 平台不支持 TCPServer，已停用")
+		return
 	while not _start(_port):
 		_port += 1
 	print("<<<GAME_MCP::PORT=%d>>>" % _port)

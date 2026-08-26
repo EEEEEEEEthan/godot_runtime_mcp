@@ -23,9 +23,11 @@ res://addons/godot_runtime_mcp/game_mcp.gd
 
 ### 2. MCP configuration
 
-Requires Python 3.10+ (Windows).
+Requires Python 3.10+.
 
 **Cursor** — `.cursor/mcp.json`:
+
+Windows:
 
 ```json
 {
@@ -37,11 +39,32 @@ Requires Python 3.10+ (Windows).
 }
 ```
 
+Linux / macOS:
+
+```json
+{
+  "mcpServers": {
+    "godot-game": {
+      "command": "addons/godot_runtime_mcp/agent_mcp.sh"
+    }
+  }
+}
+```
+
 **Codex** — `.codex/config.toml`:
+
+Windows:
 
 ```toml
 [mcp_servers.godot-game]
 command = "addons/godot_runtime_mcp/agent_mcp.bat"
+```
+
+Linux / macOS:
+
+```toml
+[mcp_servers.godot-game]
+command = "addons/godot_runtime_mcp/agent_mcp.sh"
 ```
 
 ## Usage
